@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import ACTIONS from '../Actions';
 import Client from '../components/Client';
 import Editor from '../components/Editor';
+import Chatbot from '../components/Chatbot'
 import { initSocket } from '../socket';
 import {
     useLocation,
@@ -132,7 +133,8 @@ const EditorPage = () => {
             </div>
             <div class="right">
             <div>
-                <h1 height="300px">here it goes</h1>
+                <h1 height="300px">AI Assistant</h1>
+                <Chatbot />
             </div>
             <div>
                 <h4>Visualizer</h4>
