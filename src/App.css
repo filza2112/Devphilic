@@ -141,3 +141,13 @@ footer a:hover {
     line-height: 1.6;
     padding-top: 20px;
 }
+
+.editorWrap {
+    width: 60%;
+}
+
+.combined {
+    display: flex;
+
+
+}

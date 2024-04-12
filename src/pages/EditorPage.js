@@ -120,6 +120,7 @@ const EditorPage = () => {
                     Leave
                 </button>
             </div>
+        <div className="combined">
             <div className="editorWrap">
                 <Editor
                     socketRef={socketRef}
@@ -129,6 +130,18 @@ const EditorPage = () => {
                     }}
                 />
             </div>
+            <div class="right">
+            <div>
+                <h1 height="300px">here it goes</h1>
+            </div>
+            <div>
+                <h4>Visualizer</h4>
+                <iframe width="600" height="300" frameborder="0"
+                src="http://pythontutor.com/iframe-embed.html#code=x+%3D+5%0Ay+%3D+10%0Az+%3D+x+%2B+y&cumulative=false&py=2&curInstr=3">
+                </iframe>
+            </div>
+            </div>
+        </div>
         </div>
     );
 };
