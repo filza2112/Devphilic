@@ -77,7 +77,7 @@ const Home = () => {
             </div>
             <footer>
                 <h4>
-                    Developed by Dumbledore's Army
+                    Developed by Filza Siddiqui
                 </h4>
             </footer>
         </div>

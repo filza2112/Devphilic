@@ -3,7 +3,7 @@ import { useState } from 'react';
 function Chatbot() {
   const [error, setError] = useState("");
   const [value, setValue] = useState("");
-  const [chatHistory, setChatHistory] = useState([]); // Initialize chat history
+  const [chatHistory, setChatHistory] = useState([]);
 
   const getResponse = async () => {
     if (!value) {
@@ -46,26 +46,31 @@ function Chatbot() {
   };
 
   return (
-    <div>
-      <h1>Chat with Gemini</h1>
-      <div>
+    <div className="bg-gray-100 min-h-screen flex flex-col justify-between">
+      <div className="p-4 overflow-y-auto">
         {chatHistory.map((chatItem, index) => (
-          <div key={index}>
-            <b>{chatItem.role}:</b> {chatItem.parts || chatItem.part}
+          <div key={index} className="mb-2 p-2 rounded-lg shadow-md">
+            <b className="text-gray-800">{chatItem.role}:</b>
+            <span className="text-gray-600">{chatItem.parts || chatItem.part}</span>
           </div>
         ))}
       </div>
-      <div>
+      <div className="p-4 flex">
         <input
           type="text"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="Enter your message"
+          className="flex-grow p-2 rounded-l-lg border border-gray-300 focus:outline-none focus:ring focus:ring-blue-500"
         />
-        <button onClick={getResponse}>Send</button>
-        <button onClick={clearChat}>Clear</button>
+        <button onClick={getResponse} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-lg">
+          Send
+        </button>
+        <button onClick={clearChat} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 ml-2 rounded-lg">
+          Clear
+        </button>
       </div>
-      {error && <div style={{ color: 'red' }}>{error}</div>}
+      {error && <div className="text-red-500 p-4">{error}</div>}
     </div>
   );
 }

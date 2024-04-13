@@ -22,7 +22,6 @@
     "socket.io-client": "^4.4.1",
     "uuid": "^8.3.2",
     "web-vitals": "^2.1.4"
-
   },
   "scripts": {
     "start:front": "react-scripts start",
@@ -32,7 +31,6 @@
     "server:prod": "node server.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-    
   },
   "proxy": "http://localhost:5000",
   "eslintConfig": {
