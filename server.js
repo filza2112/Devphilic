@@ -66,59 +66,65 @@ io.on('connection', (socket) => {
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
-const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require('@google/generative-ai');
-const dotenv = require('dotenv').config();
+const cors =require('cors')
+app.use(cors())
 
-const port = process.env.PORT || 3000;
-app.use(express.json());
+app.use(express.json())
+require('dotenv').config()
 
-const MODEL_NAME = "gemini-1.0-pro-001";
-const API_KEY = "AIzaSyA3sVwycichA8ZtF7JOp9NZBdtLAn4L864"; // Make sure you have this API key configured properly
+const {GoogleGenerativeAI} = require('@google/generative-ai')
+const genAI = new GoogleGenerativeAI(process.env.API.KEY)
 
-async function runChat(userInput) {
-  const genAI = new GoogleGenerativeAI(API_KEY);
-  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-
-  const generationConfig = {
-    temperature: 0.9,
-    topK: 1,
-    topP: 1,
-    maxOutputTokens: 1000,
-  };
-
-  const safetySettings = [
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    // ... other safety settings
-  ];
-
-  const chat = model.startChat({
-    generationConfig,
-    safetySettings,
-    history: [
-      // Initial chat history goes here
-    ],
-  });
-
-  const result = await chat.sendMessage(userInput);
-  const response = result.response;
-  return response.text();
-}
-
-app.post('/chat', async (req, res) => {
-  try {
-    const userInput = req.body?.userInput;
-    console.log('incoming /chat req', userInput)
-    if (!userInput) {
-      return res.status(400).json({ error: 'Invalid request body' });
-    }
-
-    const response = await runChat(userInput);
-    res.json({ response });
-  } catch (error) {
-    console.error('Error in chat endpoint:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+const {
+    GoogleGenerativeAI,
+    HarmCategory,
+    HarmBlockThreshold,
+  } = require("@google/generative-ai");
+  
+  const MODEL_NAME = "gemini-1.0-pro";
+  const API_KEY = "process.env.API.KEY";
+  
+  async function run() {
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    const model = genAI.getGenerativeModel({ model: MODEL_NAME });
+  
+    const generationConfig = {
+      temperature: 0.9,
+      topK: 1,
+      topP: 1,
+      maxOutputTokens: 2048,
+    };
+  
+    const safetySettings = [
+      {
+        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+      },
+      {
+        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+      },
+      {
+        category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+      },
+      {
+        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+      },
+    ];
+  
+    const parts = [
+    ];
+  
+    const result = await model.generateContent({
+      contents: [{ role: "user", parts }],
+      generationConfig,
+      safetySettings,
+    });
+  
+    const response = result.response;
+    console.log(response.text());
   }
-});
+  
+  run();
