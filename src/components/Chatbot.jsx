@@ -1,76 +1,73 @@
-import {useState} from 'react'
+import { useState } from 'react';
 
-function Chatbot(){
-    const [error, setError] = useState("");
-    const [value , setValue] = setState("");
-    const getResponse = async () => {
-        if(!value){
-            setError("Error! Please ask a question!")
-            return
-        }
-        try{
-            const options ={
-                method: 'POST',
-                body: JSON.stringify({
-                    history:chatHistory,
-                    message: value
-                }),
-                headers : {
-                    'Content-Type' : 'application/json'
-                }
-            }
-            const response = await fetch('http://localhost:5000/gemini', options)
-            const data =await response.text()
-            console.log(data)
-            setChatHistory(oldChatHistory => [...oldChatHistory, {
-                role: "user",
-                parts: value
-            },
-            {
-                role: "model",
-                part: data
-            }
-        ])
-        setValue("")
-        }
-        catch (error) {
-            console.error(error);
-            setError("Things are not looking good. Please try again later!")
-        }
+function Chatbot() {
+  const [error, setError] = useState("");
+  const [value, setValue] = useState("");
+  const [chatHistory, setChatHistory] = useState([]); // Initialize chat history
 
+  const getResponse = async () => {
+    if (!value) {
+      setError("Error! Please ask a question!");
+      return;
     }
-    const clear = () => {
-        setValue("")
-        setError("")
-        setChatHistory([])
+
+    try {
+      const options = {
+        method: 'POST',
+        body: JSON.stringify({
+          history: chatHistory,
+          message: value,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const response = await fetch('http://localhost:5000/gemini', options);
+      const data = await response.text();
+
+      setChatHistory(oldChatHistory => [
+        ...oldChatHistory,
+        { role: "user", parts: value },
+        { role: "model", part: data },
+      ]);
+      setValue("");
+      setError(""); 
+    } catch (error) {
+      console.error(error);
+      setError("Things are not looking good. Please try again later!");
     }
-    return(
-            <section className='app'>
-            <p>What do you need assistance with?
-            <botton className="surprise">Send Message</botton>
-            </p>
-            <div className='input-container'>
-                <input 
-                value={""}
-                placeholder='Enter you Question'
-                onChange={""}
-                />
-            
-            {!error && <button>Ask me</button>}
-            {error && <button>Clear</button>}
-            </div>
-            {error && <p>{error}</p>}
-            <div className='search-results'>
-                {chatHistory.map((chatItem, _index) => <div key={_index}>
-                    <p className='answer'>
-                    {chatItem.role} : {chatItem.parts}
-                    </p>
-                </div>)}
+  };
 
-            </div>
-            </section>
+  const clearChat = () => {
+    setValue("");
+    setError("");
+    setChatHistory([]);
+  };
 
-    )
+  return (
+    <div>
+      <h1>Chat with Gemini</h1>
+      <div>
+        {chatHistory.map((chatItem, index) => (
+          <div key={index}>
+            <b>{chatItem.role}:</b> {chatItem.parts || chatItem.part}
+          </div>
+        ))}
+      </div>
+      <div>
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder="Enter your message"
+        />
+        <button onClick={getResponse}>Send</button>
+        <button onClick={clearChat}>Clear</button>
+      </div>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+    </div>
+  );
 }
 
 export default Chatbot;
