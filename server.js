@@ -63,9 +63,6 @@ io.on('connection', (socket) => {
     });
 });
 
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
-
 
 const cors = require('cors');
 require('dotenv').config();
@@ -98,3 +95,7 @@ app.post('/gemini', async (req, res) => {
     res.status(500).send("Error generating response.");
   }
 });
+
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+
