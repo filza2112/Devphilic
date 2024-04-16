@@ -1,5 +1,5 @@
-
-<h1 align=center>Developer Friendly Collaborative Code Editor</h1>
+<h1 align=center>DEVPHILIC</h1>
+<h3 align=center>Developer Friendly Collaborative Code Editor</h3>
 <hr>
 
 
