@@ -9,7 +9,9 @@ Tech stack - `React.js`, `Node.js`, `Express.js`
 <ul>
 <li>To run this project on your local system</li>
 Run:-
-
+  
+`npm i`
+  
 `npm start`
 
 <li>then go to your <strong><em>localhost 5000</em></strong></li>
